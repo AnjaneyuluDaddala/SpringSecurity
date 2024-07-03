@@ -1,4 +1,4 @@
-package com.springSecurityForms.config;
+package com.springSession.config;
 
 import javax.sql.DataSource;
 
@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests(request->request
-				.antMatchers("/home/**","/h2-console/**").permitAll()
+				.antMatchers("/home/**","/h2-console/**","/session/**").permitAll()
 				.antMatchers("/user/**").hasRole("USER")
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				);
