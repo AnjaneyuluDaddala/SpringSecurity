@@ -27,14 +27,14 @@
         }
         .login-container input[type="text"],
         .login-container input[type="password"] {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
         .login-container input[type="submit"] {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             background-color: #4CAF50;
             border: none;
@@ -50,12 +50,31 @@
 <body>
     <div class="login-container">
         <h2>Login</h2>
+       <div class="alert alert-danger" role="alert" th:if="${invalidSession!=null}">
+        <p th:text="${invalidSession}"></p>
+        </div>
+        
+         <p th:if="${loginError} "  class="error"></p> 
+         
        <form th:action="@{/login}" method="post">
+       <div th:if="${param.error}">
+       <div class="alert alert-danger">
+       <span th:text="#{login.error}"></span>
+       
+       </div>
+       
+       </div>
+            
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required>
+            
+             <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="remember-me" name="remember-me">
+                        <label class="form-check-label" for="remember-me">Remember Me</label>
+              </div>
 
             <input type="submit" value="Login">
         </form>
