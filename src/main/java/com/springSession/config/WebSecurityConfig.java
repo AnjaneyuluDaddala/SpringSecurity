@@ -1,10 +1,12 @@
 package com.springSession.config;
 
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,6 +26,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	private DataSource dataSource;
 	
+	@Resource
+	private UserDetailsService userDetailsService;
+	
 	
 /*
 	@Override
@@ -40,28 +45,41 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	*/
 	
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication().dataSource(dataSource);
-//	}
-
+	/*
+	//InMemeory Authentication
+	
+	@Override
+	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	auth.inMemoryAuthentication()
+	   .withUser("anjan")
+	   .password("{noop}123456")
+	   .authorities("USER");
+	   }
+	
+*/
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests(request->request
-				.antMatchers("/home/**","/h2-console/**","/session/**").permitAll()
+				.antMatchers("/h2-console/**","/session/**","/register/**").permitAll()
 				.antMatchers("/user/**").hasRole("USER")
-				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/admin/**").hasAnyAuthority("ADMIN","MANAGER")
+				
 				);
 				
 		http.formLogin(login->login
 				.usernameParameter("username")
+				.defaultSuccessUrl("/home")
+				.failureUrl("/login?error=true")
 				.loginPage("/login")
 				.permitAll()
 				);
 		http.logout(logout->logout
 				.logoutRequestMatcher( new AntPathRequestMatcher("/logout"))
+				.invalidateHttpSession(true)
+				.clearAuthentication(true)
+				.logoutSuccessUrl("/login?logout")
 				.permitAll()
 				);
 		
@@ -95,6 +113,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	    }
 	 
 	 */
+	
+	
+	
+	
+	
 
 	    @Bean
 	    public PasswordEncoder passwordEncoder() {
@@ -103,7 +126,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 
 	    
 	    //JdbcUserDetails
-	    
+	  /*  
 	    @Bean
 		public UserDetailsService getDetails() {
 			
@@ -119,7 +142,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		
 			
 			return jdbc;
-			
-			
+					
 }
+
+*/
+	    
+	    
+	    @Bean
+	    public DaoAuthenticationProvider authProvider() {
+	    	DaoAuthenticationProvider dao =new DaoAuthenticationProvider();
+	    	dao.setPasswordEncoder(passwordEncoder());
+	    	dao.setUserDetailsService(userDetailsService);
+	    	return dao;
+	    }
+
+
+	    
+	    //Authentication Manager takes DaoAuthenticationProvider class.
+		@Override
+		protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+			auth.authenticationProvider(authProvider());
+		}
+	    
+	    
+	    
+	    
 }

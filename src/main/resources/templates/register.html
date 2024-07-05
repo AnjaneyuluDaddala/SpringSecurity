@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="hold-transition register-page">
+  <div class="register-box">
+    <div class="card">
+      <div class="card-body register-card-body">
+        <p class="login-box-msg">Register a new account</p>
+
+        <form action="#" th:action="@{/register}" th:object="${studentData}" method="post">
+          <div class="alert alert-danger" th:if="${#fields.hasErrors('*')}">
+          <p th:each="err : ${#fields.errors('*')}" th:text="${err}"></p>
+        </div>
+        <div class="input-group mb-3">
+        <input type="text" class="form-control"  th:field="*{name}" placeholder="Full Name" th:errorclass="is-invalid">
+        <p class="error-message" th:if="${#fields.hasErrors('name')}" th:text="${#fields.errors('name')}"></p>
+        <div class="input-group-append">
+          <div class="input-group-text">
+            <span class="fas fa-user"></span>
+          </div>
+        </div>
+      </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control"  th:field="*{collegeName}" placeholder="College Name" th:errorclass="is-invalid">
+           <p class="error-message" th:if="${#fields.hasErrors('collegeName')}" th:text="${#fields.errors('collegeName')}"></p>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+        
+          <div class="input-group mb-3">
+          <input type="text" class="form-control"  th:field="*{course}" placeholder="Course Name" th:errorclass="is-invalid">
+           <p class="error-message" th:if="${#fields.hasErrors('course')}" th:text="${#fields.errors('course')}"></p>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user"></span>
+            </div>
+          </div>
+        </div>
+       <div class="input-group mb-3">
+          <input type="email" class="form-control" th:field="*{email}" placeholder="Email" th:errorclass="is-invalid">
+           <p class="error-message" th:if="${#fields.hasErrors('email')}" th:text="${#fields.errors('email')}"></p>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" th:field="*{password}" placeholder="Password" th:errorclass="is-invalid">
+
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" class="form-control" placeholder="Retype password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+        
+         <button type="submit" class="btn btn-primary ">Register</button>
+       </form>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>
+
+
+ <!-- Bootstrap JS and jQuery (required for Bootstrap) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

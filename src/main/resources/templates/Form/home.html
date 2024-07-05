@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DevDolphins Homepage</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <style>
+    
+    
+        body{
+        
+         background-color:"skyblue";
+        }
+    
+        /* Custom styles for the Infosys homepage */
+        .hero-section {
+            background-image: url('data:image/jpeg;base64,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'); /* Replace with actual image URL */
+            background-size: cover;
+            background-position: center;
+            height: 600px;
+            color: #fff;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 20px;
+        }
+        .hero-section h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+        .hero-section p {
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">DevDolphins</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Services</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About Us</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Contact</a>
+            </li>
+           <li class="nav-item">
+               <form th:action="@{/logout}" method="post">
+			    <input type="submit" class="btn btn-primary p-2"  value="Logout" />
+		      </form>
+            </li>
+            
+            
+        </ul>
+    </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                <h1>Welcome to Devlophins Private Limited</h1>
+                <h2><span th:text="${username}">${username}</span>!</h2>
+                <p>Your partner for digital transformation.</p>
+                <a href="#" class="btn btn-primary btn-lg">Learn More</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Content Section -->
+<section class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2">
+            <h2>About Devdolphins</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ornare purus nec velit ultrices,
+                vitae malesuada lacus suscipit.</p>
+            <p>Donec vehicula commodo massa at vestibulum. Sed tincidunt augue ut lectus condimentum, id feugiat
+                nisl rhoncus.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Footer -->
+<footer class="container-fluid bg-light mt-5 py-3">
+    <div class="text-center">
+        <p>&copy; 2024 DevDolphins. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- Bootstrap JS and dependencies -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
