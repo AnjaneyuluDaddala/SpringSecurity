@@ -1,37 +1,34 @@
 package com.springSecurityForms.controller;
 
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class FormController {
 	
-	      
-	    @GetMapping("/login") 
-	    public String login() { 
-	        return "login"; 
-	          
-	    }
-	    
-	    @GetMapping("/home") 
-	    public String home() { 
-	        return "home"; 
+	       
+	    @GetMapping("/page") 
+	    public String page() { 
+	        return "page"; 
 	          
 	    }
 	    
 	    
 	    
 	    @GetMapping("/user")
-	    public String userLogin(Model model) {
-	    	model.addAttribute("name", "user");
+	    public String userLogin(Model model,Principal prince) {
+	    	model.addAttribute("name",prince.getName() );
 	    	return "welcome";
 	    }
 
-	    @GetMapping("/admin")
-	    public String adminLogin(Model model) {
-	    	model.addAttribute("name", "admin");
+	    @GetMapping("/user/portal")
+	    public String adminLogin(Model model,Principal prince) {
+	    	model.addAttribute("name", prince.getName());
 	    	return "welcome";
 	    }
 }
