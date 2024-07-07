@@ -27,14 +27,14 @@
         }
         .login-container input[type="text"],
         .login-container input[type="password"] {
-            width: 100%;
+            width: 80%;
             padding: 10px;
             margin: 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
         }
         .login-container input[type="submit"] {
-            width: 100%;
+            width: 60%;
             padding: 10px;
             background-color: #4CAF50;
             border: none;
@@ -51,6 +51,9 @@
     <div class="login-container">
         <h2>Login</h2>
        <form th:action="@{/login}" method="post">
+       
+         <p th:text="${error}" class="alert alert-danger"></p>
+         
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
@@ -62,4 +65,3 @@
     </div>
 </body>
 </html>
-

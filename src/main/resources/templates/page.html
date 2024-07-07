@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title>Home Page</title>
     <link rel="stylesheet" href="/css/styles.css"> <!-- Link to your CSS file -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
@@ -16,7 +16,7 @@
             align-items: center;
             height: 100vh;
         }
-        .welcome-container {
+        .page-container {
             background-color: #fff;
             padding: 20px;
             border-radius: 8px;
@@ -25,28 +25,28 @@
             width: 80%;
             max-width: 600px;
         }
-        .welcome-container h2 {
+        .page-container h2 {
             margin-bottom: 20px;
         }
-        .welcome-container a {
+        .page-container a {
             display: block;
             margin-top: 20px;
             text-decoration: none;
             color: #007BFF;
             font-weight: bold;
         }
-        .welcome-container a:hover {
+        .page-container a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-    <div class="welcome-container">
-       <h1 class="mt-5">Welcome, <span th:text="${name}"></span>!</h1>
-        <p>You have successfully logged in.</p>
+    <div class="page-container">
+        <h2>Welcome to the Home Page!</h2>
+        <p>This is a general page accessible to all users.</p>
 
-     
-        <a th:href="@{/page}">Go to Home Page</a>
+        <a th:href="@{/user}" th:if="${#request.isUserInRole('USER')}">Go to User Dashboard</a>
+        <a th:href="@{/admin}" th:if="${#request.isUserInRole('ADMIN')}">Go to Admin Dashboard</a>
         <a th:href="@{/logout}">Logout</a>
     </div>
 </body>

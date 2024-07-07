@@ -5,8 +5,8 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
@@ -19,107 +19,102 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-	
-	@Autowired
-	private DataSource dataSource;
-	
-	
-/*
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests(request->request
-				.antMatchers("/home/**").permitAll()
-				.antMatchers("/user/**").hasRole("USER")
-				.antMatchers("/admin/**").hasRole("ADMIN")
-				
-				);
-	
-		super.configure(http);
+public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    private DataSource dataSource;
+    
+    
+    
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests(requests -> requests
+                .antMatchers("/page/**", "/h2-console/**").permitAll()
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+        );
+
+        http.formLogin(login -> login
+                .loginPage("/login")
+                .usernameParameter("username")
+                .successHandler((request,response,auth)->{
+                	
+                	if(auth != null && auth.isAuthenticated() && !auth.getAuthorities().isEmpty()) {
+                	   	if(auth.getAuthorities().stream().anyMatch(r->r.getAuthority().equals("ROLE_USER"))) {
+                    		response.sendRedirect("/user");
+                    		
+                    	}else if(auth.getAuthorities().stream().anyMatch(r->r.getAuthority().equals("ROLE_ADMIN"))) {
+                    		response.sendRedirect("/admin");
+                 
+                    	}
+                		
+                	}else {
+                		response.sendRedirect("/login");
+                	}
+                	
+               
+
+                	
+                })
+                .failureUrl("/login?error=true")
+               
+                .permitAll()
+        );
+
+        http.logout(logout -> logout
+                .invalidateHttpSession(true)
+                .clearAuthentication(true)
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .permitAll()
+        );
+
+        http.csrf(csrf -> csrf    // Disable CSRF protection for H2 console
+                .ignoringAntMatchers("/h2-console/**")
+        );
+
+        http.headers(headers -> headers
+                .frameOptions(frameOptions -> frameOptions.sameOrigin())  // Allow H2 console to be accessed in an iframe
+        );
+    }
+
+    
+
+
+    @Override
+	public void configure(WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/h2-console/**");
 	}
-	
-	*/
-	
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication().dataSource(dataSource);
-//	}
 
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		
-		http.authorizeRequests(request->request
-				.antMatchers("/home/**","/h2-console/**").permitAll()
-				.antMatchers("/user/**").hasRole("USER")
-				.antMatchers("/admin/**").hasRole("ADMIN")
-				);
-				
-		http.formLogin(login->login
-				.usernameParameter("username")
-				.loginPage("/login")
-				.permitAll()
-				);
-		http.logout(logout->logout
-				.logoutRequestMatcher( new AntPathRequestMatcher("/logout"))
-				.permitAll()
-				);
-		
-		http.csrf(csrf->csrf
-				.ignoringAntMatchers("/h2-console/**")
-				);
-		http.headers(header->header
-				.frameOptions(frame->frame.sameOrigin())
-				);
-	
-		super.configure(http);
-	}
 
-	
-	//InMemoryUserDetailsManager
-	
-	/*
-	
-	 @Bean
-	    public UserDetailsService userDetailsService() {
-	        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-	        manager.createUser(User.withUsername("anjan")
-	            .password(passwordEncoder().encode("1234"))
-	            .roles("USER")
-	            .build());
-	        manager.createUser(User.withUsername("admin")
-	            .password(passwordEncoder().encode("4567"))
-	            .roles("ADMIN")
-	            .build());
-	        return manager;
-	    }
-	 
-	 */
 
-	    @Bean
-	    public PasswordEncoder passwordEncoder() {
-	        return new BCryptPasswordEncoder();
-	    }
+	@Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	    
-	    //JdbcUserDetails
-	    
-	    @Bean
-		public UserDetailsService getDetails() {
-			
-		UserDetails user1=User.withUsername("anjan").password(passwordEncoder().encode("1234"))
-				                             .roles("USER").build();
-		UserDetails admin=User.withUsername("admin").password(passwordEncoder().encode("4567"))
-				                             .roles("ADMIN").build();
+    
+    //JDBCdetails manager of class extends JdbcDaoImpl implements UserDetailsManger.
+    //JdbcDaoImpl  extends JdbcDaoSupport implements UserDetailsService.
+    
+    
+    @Bean
+	public UserDetailsService getDetails() {
 		
-		JdbcUserDetailsManager jdbc=new JdbcUserDetailsManager(dataSource);
+	UserDetails user1=User.withUsername("anjan").password(passwordEncoder().encode("1234"))
+			                             .roles("USER").build();
+	UserDetails admin=User.withUsername("admin").password(passwordEncoder().encode("4567"))
+			                             .roles("ADMIN").build();
+	
+	JdbcUserDetailsManager jdbc=new JdbcUserDetailsManager(dataSource);
+	
+	jdbc.createUser(user1);
+	jdbc.createUser(admin);
+	
 		
-		jdbc.createUser(user1);
-		jdbc.createUser(admin);
-		
-			
-			return jdbc;
-			
-			
-}
+		return jdbc;
+    }
 }
