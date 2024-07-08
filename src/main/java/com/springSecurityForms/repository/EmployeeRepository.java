@@ -10,7 +10,7 @@ import com.springSecurityForms.model.EmployeeEntity;
 @Repository
 public interface EmployeeRepository  extends JpaRepository<EmployeeEntity, Long>{
 	
-    Optional<EmployeeEntity> findByUsername(String username);
-    Boolean existsByUsername(String username);
+    Optional<EmployeeEntity> findByEmail(String username);
+    Boolean existsByEmail(String username);
 
 }

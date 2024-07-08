@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.springSecurityForms.security.CustomEmployeeServiceImpl;
 
@@ -28,33 +27,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
-		http.authorizeRequests(request->request
-				  .antMatchers("/api/admin/**").hasRole("ADMIN") // more specific
-	              .antMatchers("/api/user/**").hasRole("USER") // more specific
-	              .antMatchers("/api/public/**").permitAll()
+	
+	        http.csrf(csrf -> csrf.disable())
+	                .authorizeHttpRequests(requests -> {
+	                    requests.antMatchers("/registration/**", "/login/**").permitAll();
+	                    requests.anyRequest().authenticated();})
+	                
+	                .formLogin(login -> login.loginPage("/login")
+	                .successHandler(successHandler))
+	                .csrf(csrf -> csrf.disable())
+	                .logout(logout -> logout.logoutUrl("/logout")
+	                .logoutSuccessUrl("/login"))
+	                .oauth2Login(login -> login.loginPage("/login").successHandler(successHandler));
+	        
+	        http.headers(header->header
+					.frameOptions(frame->frame.sameOrigin())
+					);
+	
+	        super.configure(http);
+	    }
+		
 	              
 	                
-				);
-				
-		http.formLogin(login->login
-				.usernameParameter("username")
-				.loginPage("/api/login")
-				.permitAll()
-				);
-		http.logout(logout->logout
-				.logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
-                .logoutSuccessUrl("/api/login?logout")
-				);
-		
-		http.csrf(csrf->csrf
-				.disable()
-				);
-		http.headers(header->header
-				.frameOptions(frame->frame.sameOrigin())
-				);
-	
-		super.configure(http);
-	}
+
 
 	@Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

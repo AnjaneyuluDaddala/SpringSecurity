@@ -1,7 +1,5 @@
 package com.springSecurityForms.model;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -15,9 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name="employee")
@@ -27,9 +22,13 @@ public class EmployeeEntity{
 	  @GeneratedValue(strategy = GenerationType.IDENTITY)
 	  private Long id;
 
-	  private String username;
+	  private String name;
 
 	  private String password;
+	  
+	  private String email;
+	  
+	  
 	  
 	  private int age;
 	  
@@ -49,14 +48,15 @@ public class EmployeeEntity{
 
 
 
-	public EmployeeEntity(Long id, String username, String password, int age, double salary, List<Role> roles) {
+	public EmployeeEntity(Long id, String name, String password, int age, double salary, List<Role> roles,String email) {
 		super();
 		this.id = id;
-		this.username = username;
+		this.name = name;
 		this.password = password;
 		this.age = age;
 		this.salary = salary;
 		this.roles = roles;
+		this.email=email;
 	}
 
 
@@ -73,14 +73,14 @@ public class EmployeeEntity{
 
 
 
-	public String getUsername() {
-		return username;
+	public String getName() {
+		return name;
 	}
 
 
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setName(String name) {
+		this.name = name;
 	}
 
 
@@ -129,6 +129,20 @@ public class EmployeeEntity{
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
+	}
+
+
+
+
+	public String getEmail() {
+		return email;
+	}
+
+
+
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	  
 

@@ -1,12 +1,9 @@
 package com.springSecurityForms.serviceInter;
 
-import java.util.List;
-
+import com.springSecurityForms.employeeDto.EmployeeRegisterDto;
 import com.springSecurityForms.model.EmployeeEntity;
 
 public interface EmployeeServiceInter {
-	
-	List<EmployeeEntity> getAllEmployees();
-	void deleteEmployee(Long id);
+	EmployeeEntity save(EmployeeRegisterDto EmpRegisterDTO);
 
 }

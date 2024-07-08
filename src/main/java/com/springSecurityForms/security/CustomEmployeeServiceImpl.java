@@ -30,8 +30,8 @@ public class CustomEmployeeServiceImpl implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
-		   EmployeeEntity emp = empRepo.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-	        return new User(emp.getUsername(),emp.getPassword(), mapRolesToAuthorities(emp.getRoles()));
+		   EmployeeEntity emp = empRepo.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
+	        return new User(emp.getEmail(),emp.getPassword(), mapRolesToAuthorities(emp.getRoles()));
 	}
 	
     private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
