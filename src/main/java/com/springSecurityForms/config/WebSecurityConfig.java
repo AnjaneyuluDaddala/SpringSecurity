@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.springSecurityForms.CustomSuccessFulHandler;
 import com.springSecurityForms.security.CustomEmployeeServiceImpl;
 
 
@@ -22,6 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
  @Autowired
  private CustomEmployeeServiceImpl customService;
+ 
+ @Autowired
+ private  CustomSuccessFulHandler successHandler;
 
 
 	@Override
