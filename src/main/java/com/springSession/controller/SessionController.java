@@ -23,11 +23,12 @@ public class SessionController {
 	          
 	    }
 	    
-	    @GetMapping("/home") 
-	    public String home() { 
-	        return "home"; 
-	          
+	    @GetMapping("/session-expired")
+	    public String expire() {
+	    	return "expire";
+	    	
 	    }
+	    
 	    
 	    
 	    

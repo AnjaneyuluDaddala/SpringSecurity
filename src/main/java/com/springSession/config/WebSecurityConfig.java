@@ -37,7 +37,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 
 		http.authorizeRequests(request -> request
-				.antMatchers("/home/**", "/h2-console/**", "/session/**").permitAll()
+				.antMatchers( "/h2-console/**", "/session/**").permitAll()
 				.antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
 				.antMatchers("/admin/**").hasRole("ADMIN"));
 
@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 					} else if (auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_USER"))) {
 						response.sendRedirect("/user");
 					} else {
-						response.sendRedirect("/login?error=true");
+						response.sendRedirect("/login");
 					}
 				}).permitAll());
 
@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.logoutSuccessUrl("/login").deleteCookies("dummyCookie").permitAll());
 
 		http.rememberMe(remember -> remember.
-				userDetailsService(getDetails()).tokenValiditySeconds(2000)
+				userDetailsService(getDetails()).tokenValiditySeconds(200000000)
 				.useSecureCookie(true).tokenRepository(null).rememberMeCookieName("custom-remember")
 				.rememberMeCookieDomain("domain"));
 		
@@ -70,7 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //				);		
 
 		http.sessionManagement(session -> session
-				 .invalidSessionUrl("/login?invalid-session=true") //session timeout
+//				 .invalidSessionUrl("/login?invalid-session=true") //session timeout
+				
+				.sessionFixation().migrateSession()
+				.invalidSessionUrl("/session-expired")
 				.maximumSessions(1).maxSessionsPreventsLogin(true)
 				.expiredUrl("/login?expired=true")
 		  
