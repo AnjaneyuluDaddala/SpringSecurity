@@ -28,21 +28,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private DataSource dataSource;
 
-//	@Autowired
-//	private UserDetailsService userDetailsService;
-
-	/*
-	 * @Override protected void configure(HttpSecurity http) throws Exception {
-	 * http.authorizeRequests(request->request .antMatchers("/home/**").permitAll()
-	 * .antMatchers("/user/**").hasRole("USER")
-	 * .antMatchers("/admin/**").hasRole("ADMIN")
-	 * 
-	 * );
-	 * 
-	 * super.configure(http); }
-	 * 
-	 */
-
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.jdbcAuthentication().dataSource(dataSource);
@@ -53,7 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests(request -> request
 				.antMatchers("/home/**", "/h2-console/**", "/session/**").permitAll()
-				.antMatchers("/user/**").hasAnyRole("USER", "ADMIN").antMatchers("/admin/**").hasRole("ADMIN"));
+				.antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+				.antMatchers("/admin/**").hasRole("ADMIN"));
 
 		http.formLogin(login -> login.
 				usernameParameter("username").loginPage("/login")
@@ -123,29 +109,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	
 
-	
-
-	
-	//InMemoryUserDetailsManager
-	
-	/*
-	
-	 @Bean
-	    public UserDetailsService userDetailsService() {
-	        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-	        manager.createUser(User.withUsername("anjan")
-	            .password(passwordEncoder().encode("1234"))
-	            .roles("USER")
-	            .build());
-	        manager.createUser(User.withUsername("admin")
-	            .password(passwordEncoder().encode("4567"))
-	            .roles("ADMIN")
-	            .build());
-	        return manager;
-	    }
-	 
-	 */
-
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring()
@@ -157,21 +120,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	    public PasswordEncoder passwordEncoder() {
 	        return new BCryptPasswordEncoder();
 	    }
-
-	/*
-	 * 
-	 * @Bean public DaoAuthenticationProvider authProvider() {
-	 * DaoAuthenticationProvider dao =new DaoAuthenticationProvider();
-	 * dao.setPasswordEncoder(passwordEncoder());
-	 * dao.setUserDetailsService(userDetailsService); return dao; }
-	 * 
-	 */
-
-	// Authentication Manager takes DaoAuthenticationProvider class.
-	/*
-	 * @Override protected void configure(AuthenticationManagerBuilder auth) throws
-	 * Exception { auth.authenticationProvider(authProvider()); }
-	 */
 
 	// JdbcUserDetails
 
