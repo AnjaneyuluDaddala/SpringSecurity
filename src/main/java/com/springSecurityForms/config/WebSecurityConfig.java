@@ -1,67 +1,45 @@
 package com.springSecurityForms.config;
 
-import javax.sql.DataSource;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
 
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	@Autowired
-	private DataSource dataSource;
-	
-	
-/*
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests(request->request
-				.antMatchers("/home/**").permitAll()
-				.antMatchers("/user/**").hasRole("USER")
-				.antMatchers("/admin/**").hasRole("ADMIN")
-				
-				);
-	
-		super.configure(http);
-	}
-	
-	*/
-	
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication().dataSource(dataSource);
-//	}
+ @Autowired
+ @Qualifier("customEmployeeServiceImpl")
+ private UserDetailsService customService;
 
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests(request->request
-				.antMatchers("/home/**","/h2-console/**").permitAll()
+				.antMatchers("/home/**","/h2-console/**","/save").permitAll()
 				.antMatchers("/user/**").hasRole("USER")
 				.antMatchers("/admin/**").hasRole("ADMIN")
 				);
 				
 		http.formLogin(login->login
 				.usernameParameter("username")
-				.loginPage("/login")
 				.permitAll()
 				);
 		http.logout(logout->logout
-				.logoutRequestMatcher( new AntPathRequestMatcher("/logout"))
 				.permitAll()
 				);
 		
@@ -75,51 +53,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		super.configure(http);
 	}
 
-	
-	//InMemoryUserDetailsManager
-	
-	/*
-	
-	 @Bean
-	    public UserDetailsService userDetailsService() {
-	        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-	        manager.createUser(User.withUsername("anjan")
-	            .password(passwordEncoder().encode("1234"))
-	            .roles("USER")
-	            .build());
-	        manager.createUser(User.withUsername("admin")
-	            .password(passwordEncoder().encode("4567"))
-	            .roles("ADMIN")
-	            .build());
-	        return manager;
-	    }
-	 
-	 */
 
+
+	    
 	    @Bean
+	    DaoAuthenticationProvider daoAuthenticationProvider() {
+	    	DaoAuthenticationProvider dao=new DaoAuthenticationProvider();
+	    	dao.setPasswordEncoder(passwordEncoder());
+	    	dao.setUserDetailsService(customService);
+	    	
+	    	return dao;
+	    }
+
+	    
+	@Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	     auth.authenticationProvider(daoAuthenticationProvider());
+			}
+
+
+
+		@Bean
 	    public PasswordEncoder passwordEncoder() {
 	        return new BCryptPasswordEncoder();
 	    }
 
-	    
-	    //JdbcUserDetails
-	    
-	    @Bean
-		public UserDetailsService getDetails() {
-			
-		UserDetails user1=User.withUsername("anjan").password(passwordEncoder().encode("1234"))
-				                             .roles("USER").build();
-		UserDetails admin=User.withUsername("admin").password(passwordEncoder().encode("4567"))
-				                             .roles("ADMIN").build();
-		
-		JdbcUserDetailsManager jdbc=new JdbcUserDetailsManager(dataSource);
-		
-		jdbc.createUser(user1);
-		jdbc.createUser(admin);
-		
-			
-			return jdbc;
-			
-			
-}
+
 }
