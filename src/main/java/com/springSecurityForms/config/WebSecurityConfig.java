@@ -3,7 +3,6 @@ package com.springSecurityForms.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -11,10 +10,11 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import com.springSecurityForms.security.CustomEmployeeServiceImpl;
 
 
 @Configuration
@@ -22,29 +22,32 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
  @Autowired
- @Qualifier("customEmployeeServiceImpl")
- private UserDetailsService customService;
+ private CustomEmployeeServiceImpl customService;
 
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.authorizeRequests(request->request
-				.antMatchers("/home/**","/h2-console/**","/save").permitAll()
-				.antMatchers("/user/**").hasRole("USER")
-				.antMatchers("/admin/**").hasRole("ADMIN")
+				  .antMatchers("/api/admin/**").hasRole("ADMIN") // more specific
+	              .antMatchers("/api/user/**").hasRole("USER") // more specific
+	              .antMatchers("/api/public/**").permitAll()
+	              
+	                
 				);
 				
 		http.formLogin(login->login
 				.usernameParameter("username")
+				.loginPage("/api/login")
 				.permitAll()
 				);
 		http.logout(logout->logout
-				.permitAll()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/api/logout"))
+                .logoutSuccessUrl("/api/login?logout")
 				);
 		
 		http.csrf(csrf->csrf
-				.ignoringAntMatchers("/h2-console/**")
+				.disable()
 				);
 		http.headers(header->header
 				.frameOptions(frame->frame.sameOrigin())
@@ -53,7 +56,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		super.configure(http);
 	}
 
-
+	@Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	     auth.authenticationProvider(daoAuthenticationProvider());
+			}
 
 	    
 	    @Bean
@@ -65,12 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	    	return dao;
 	    }
 
-	    
-	@Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-	     auth.authenticationProvider(daoAuthenticationProvider());
-			}
-
+	 
 
 
 		@Bean
