@@ -24,7 +24,6 @@ import com.SpringSecurity.serviceImpl.EmployeeServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
 @EnableGlobalAuthentication
 public class SecurityConfig {
 	
@@ -53,7 +52,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(
                         req->req.requestMatchers("/login/**","/register/**", "/refresh_token/**")
                                 .permitAll()
-                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")                        
+                                .requestMatchers("/admin_only/**").hasAuthority("ADMIN")  
+                                .requestMatchers("/user/**").hasAuthority("USER")
                                 .anyRequest()
                                 .authenticated()
               // need tell spring which userdetails are taken.              

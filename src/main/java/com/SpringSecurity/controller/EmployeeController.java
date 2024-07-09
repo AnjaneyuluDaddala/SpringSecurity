@@ -6,6 +6,8 @@ import java.util.Optional;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,11 +35,14 @@ public class EmployeeController {
 
 
 	    @PostMapping("/register")
+	    @PreAuthorize("hasRole('ADMIN')")
 	    public ResponseEntity<AuthenticationResponse> register(
 	            @RequestBody Employee request
 	            ) {
 	        return ResponseEntity.ok(authService.register(request));
 	    }
+	    
+	    
 
 	    @PostMapping("/login")
 	    public ResponseEntity<AuthenticationResponse> login(
@@ -59,7 +64,7 @@ public class EmployeeController {
 	    
 	    
 	    @GetMapping("/user/{id}")
-	    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+	    @PreAuthorize("hasRole('USER')")
 	    public Employee getUserById( @PathVariable("id")  Integer id) {
 	    	Employee employee= this.repo.findById(id).orElseThrow();	
 	    	return employee; 	
@@ -67,8 +72,8 @@ public class EmployeeController {
 	    }
 	    
 	    
-	    @GetMapping("/manager")
-	    @PreAuthorize("hasRole('MANAGER')")
+	    @GetMapping("/admin_only")
+	    @PreAuthorize("hasRole('ADMIN')")
 	    public List<Employee> getMangerById() {
 	    	List<Employee> employees = this.repo.findAll();    	
 	    	return employees;
