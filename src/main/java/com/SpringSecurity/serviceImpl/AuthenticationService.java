@@ -65,7 +65,7 @@ public class AuthenticationService {
 
 	          Employee emp = empRepo.save(employee);
 	          
-	          //generating token
+	          //saving the token
 
 	        String accessToken = jwtService.generateAccessToken(emp);
 	        String refreshToken = jwtService.generateRefreshToken(emp);
@@ -109,6 +109,7 @@ public class AuthenticationService {
 
 	        tokenRepository.saveAll(validTokens);
 	    }
+	    
 	    private void saveUserToken(String accessToken, String refreshToken, Employee emp) {
 	        Tokens token = new Tokens();
 	        token.setAccessToken(accessToken);
