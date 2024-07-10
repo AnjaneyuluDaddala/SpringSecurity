@@ -5,12 +5,12 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests(requests -> requests
-                .antMatchers("/page/**", "/h2-console/**").permitAll()
+                .antMatchers("/page/**").permitAll()
                 .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
@@ -71,9 +71,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
         );
 
-        http.csrf(csrf -> csrf    // Disable CSRF protection for H2 console
-                .ignoringAntMatchers("/h2-console/**")
-        );
+//        http.csrf(csrf -> csrf    // Disable CSRF protection for H2 console
+//                .ignoringAntMatchers("/h2-console/**")
+//        );
+        
+        
+        http.csrf(csrf->csrf.disable());
 
         http.headers(headers -> headers
                 .frameOptions(frameOptions -> frameOptions.sameOrigin())  // Allow H2 console to be accessed in an iframe
@@ -82,39 +85,54 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     
 
+//
+//    @Override
+//	public void configure(WebSecurity web) throws Exception {
+//		web.ignoring().antMatchers("/h2-console/**");
+//	}
 
+
+    
     @Override
-	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/h2-console/**");
-	}
-
-
-
-
-	@Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.jdbcAuthentication().dataSource(dataSource);
     }
 
+
+	
     
     //JDBCdetails manager of class extends JdbcDaoImpl implements UserDetailsManger.
     //JdbcDaoImpl  extends JdbcDaoSupport implements UserDetailsService.
     
     
+    @Override
     @Bean
+	protected AuthenticationManager authenticationManager() throws Exception {
+		return super.authenticationManager();
+	}
+
+
+
+	@Bean
 	public UserDetailsService getDetails() {
-		
-	UserDetails user1=User.withUsername("anjan").password(passwordEncoder().encode("1234"))
-			                             .roles("USER").build();
-	UserDetails admin=User.withUsername("admin").password(passwordEncoder().encode("4567"))
-			                             .roles("ADMIN").build();
+    	JdbcUserDetailsManager jdbc=new JdbcUserDetailsManager(dataSource);
+    	
+    	jdbc.setUsersByUsernameQuery("SELECT username, password, 1 as enabled FROM user WHERE username = ?");
+   
+    	jdbc.setAuthoritiesByUsernameQuery("SELECT username, role as authority FROM user WHERE username = ?");
+    
+    	
+    	
 	
-	JdbcUserDetailsManager jdbc=new JdbcUserDetailsManager(dataSource);
-	
-	jdbc.createUser(user1);
-	jdbc.createUser(admin);
-	
-		
 		return jdbc;
     }
 }
+
+
+/*
+
+UserDetails user1=User.withUsername("anjan").password(passwordEncoder().encode("1234"))
+.roles("USER").build();
+UserDetails admin=User.withUsername("admin").password(passwordEncoder().encode("4567"))
+.roles("ADMIN").build();
+*/

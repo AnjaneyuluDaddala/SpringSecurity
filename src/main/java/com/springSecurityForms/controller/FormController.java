@@ -5,8 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-
-
 @Controller
 public class FormController {
 	
@@ -35,6 +33,10 @@ public class FormController {
     
     @GetMapping("/user")
     public String getUser(Model model,Principal prince) {
+    	
+    	
+    	
+    	
     	model.addAttribute("name", prince.getName());
     	return "welcome";
     	
