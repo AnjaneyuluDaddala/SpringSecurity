@@ -23,7 +23,6 @@ import com.springSecurityForms.model.EmployeeEntity;
 import com.springSecurityForms.serviceImpl.EmployeeServiceImpl;
 
 @RestController
-@EnableMethodSecurity
 @RequestMapping("/api")
 public class FormController {
 	

@@ -18,7 +18,7 @@ import com.springSecurityForms.model.EmployeeEntity;
 import com.springSecurityForms.model.Role;
 import com.springSecurityForms.repository.EmployeeRepository;
 
-@Service("customEmployeeServiceImpl")
+@Service
 @Transactional
 public class CustomEmployeeServiceImpl implements UserDetailsService{
 	
