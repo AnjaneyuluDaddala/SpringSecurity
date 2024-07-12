@@ -1,56 +1,38 @@
 package com.security.config;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
-import com.security.repository.BookRepository;
+import com.security.serviceImpl.CustomDeatilsService;
 
 @Configuration
-public class ApplicationConfig  {
-	
-	@Autowired
-	private BookRepository bookRepo;
-	
-	@Bean
-	public UserDetailsService userDetails() {
-		
-		return username->bookRepo.findByEmail(username)
-				.orElseThrow(()->new UsernameNotFoundException("user is not found"));
-			
-			
-		}
-	
-	@Bean
-	public AuthenticationProvider authProvider() {
-		
-		DaoAuthenticationProvider provider=new DaoAuthenticationProvider();
-		provider.setUserDetailsService(userDetails());
-		provider.setPasswordEncoder(pswdEncode());
-		
-		return provider;
-	}
-	
-//	@Bean
-//	public AuthenticationManager authManger(AuthenticationConfiguration config) throws Exception{
-//		
-//		return config.getAuthenticationManager();
-//		
-//	}
-	
-	@Bean
-	public PasswordEncoder pswdEncode() {
-		return  new BCryptPasswordEncoder();
-	}
-	
-	
-			
-	}
+public class ApplicationConfig {
+    
+    private final CustomDeatilsService customService;
 
+    public ApplicationConfig(CustomDeatilsService customService) {
+        this.customService=customService;
+    }
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(customService);
+        provider.setPasswordEncoder(pswdEncode());
+        return provider;
+    }
+    
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
+
+    @Bean
+    public PasswordEncoder pswdEncode() {
+        return new BCryptPasswordEncoder();
+    }
+}

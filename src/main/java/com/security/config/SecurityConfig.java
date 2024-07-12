@@ -31,7 +31,7 @@ public class SecurityConfig {
 		http.authorizeHttpRequests((requests)->
 		   
 		    
-			requests.requestMatchers("/book/home","/book/store","/book/authenticate/**","/book/register/**").permitAll() 
+			requests.requestMatchers("/book/","/book/store","/book/authenticate/**").permitAll() 
 			.anyRequest().authenticated())
 		    .authenticationProvider(userDetailsProvider)
 		    .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -1,16 +1,14 @@
 package com.security.model;
 
-import java.util.Collection;
-import java.util.List;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,12 +16,8 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name="Bookuser")
-public class BookUser implements UserDetails{
+public class BookUser{
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,31 +34,18 @@ public class BookUser implements UserDetails{
 	private String address;
 	private String password;
 	
+	@ElementCollection(fetch = FetchType.EAGER)
 	@Enumerated(EnumType.STRING)
-	private Role role;
-
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-
-		return List.of(new SimpleGrantedAuthority(role.name()));
-	}
-
-	@Override
-	public String getPassword() {
-		return password;
-	}
-
-	@Override
-	public String getUsername() {
-		return email;
-	}
+	private Set<Role> roles = new HashSet<>();
 	
 	public BookUser() {
 		
 	}
 
+
+
 	public BookUser(int id, String lastName, String firstName, String email, String phone, String address,
-			String password, Role role) {
+			String password, Set<Role> roles) {
 		super();
 		this.id = id;
 		this.lastName = lastName;
@@ -73,8 +54,10 @@ public class BookUser implements UserDetails{
 		this.phone = phone;
 		this.address = address;
 		this.password = password;
-		this.role = role;
+		this.roles = roles;
 	}
+
+
 
 	public int getId() {
 		return id;
@@ -124,19 +107,26 @@ public class BookUser implements UserDetails{
 		this.address = address;
 	}
 
-	public Role getRole() {
-		return role;
-	}
-
-	public void setRole(Role role) {
-		this.role = role;
+	public String getPassword() {
+		return password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
+
+
+
+	public Set<Role> getRoles() {
+		return roles;
+	}
+
+
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
+
 	
 	
 }
