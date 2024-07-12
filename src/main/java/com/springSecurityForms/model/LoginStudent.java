@@ -14,6 +14,12 @@ public class LoginStudent {
 		this.username = username;
 		this.password = password;
 	}
+	public LoginStudent(String username) {
+
+		this.username = username;
+
+	}
+	
 
 	public String getUsername() {
 		return username;
