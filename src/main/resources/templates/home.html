@@ -1,87 +1,93 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company website page</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <link href="styles.css" rel="stylesheet">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Company website page</title>
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<link href="styles.css" rel="stylesheet">
 </head>
+
 <body class="bg-success">
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Devdolphins</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-                  <li class="nav-item">
-                    <a th:href="@{/logout}">Logout</a>
-                </li>
-                	
-            </ul>
-        </div>
-    </nav>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+		<a class="navbar-brand" href="#">Devdolphins</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item active">
+					<a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">About</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Services</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Contact</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-button btn-warning btn p-2" href="@{/logout}">Logout</a>
+                    </form>
+				</li>
 
-    <!-- Hero Section -->
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome to DevDolphins</h1>
-        <p class="lead">We provide the best services to grow your business.</p>
-        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-    </div>
+			</ul>
+		</div>
+	</nav>
 
-    <!-- About Section -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <h2>About Us</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et magna nec velit luctus facilisis. Quisque malesuada nulla in arcu auctor, a vestibulum dolor cursus.</p>
-            </div>
-            <div class="col-md-6">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxKsiRBE9bI7aXcupCRK6egXZIKiNnOTYf9Q&s" class="img-fluid" alt="About Image">
-            </div>
-        </div>
-    </div>
+	<!-- Hero Section -->
+	<div class="jumbotron text-center">
+		<h1 class="display-4">Welcome to DevDolphins</h1>
+		<p class="lead">We provide the best services to grow your business.</p>
+		<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+	</div>
 
-    <!-- Services Section -->
-    <div class="container py-5">
-        <div class="row">
-            <div class="col-md-4">
-                <h3>Service 1</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="col-md-4">
-                <h3>Service 2</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-            <div class="col-md-4">
-                <h3>Service 3</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-            </div>
-        </div>
-    </div>
+	<!-- About Section -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<h2>About Us</h2>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec et magna nec velit luctus facilisis.
+					Quisque malesuada nulla in arcu auctor, a vestibulum dolor cursus.</p>
+			</div>
+			<div class="col-md-6">
+				<img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRxKsiRBE9bI7aXcupCRK6egXZIKiNnOTYf9Q&s"
+					class="img-fluid" alt="About Image">
+			</div>
+		</div>
+	</div>
 
-    <!-- Footer -->
-    <footer class="bg-light text-center py-4">
-        <p>&copy; 2024 DevDolphins. All rights reserved.</p>
-    </footer>
+	<!-- Services Section -->
+	<div class="container py-5">
+		<div class="row">
+			<div class="col-md-4">
+				<h3>Service 1</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
+			<div class="col-md-4">
+				<h3>Service 2</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
+			<div class="col-md-4">
+				<h3>Service 3</h3>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+			</div>
+		</div>
+	</div>
 
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- Footer -->
+	<footer class="bg-light text-center py-4">
+		<p>&copy; 2024 DevDolphins. All rights reserved.</p>
+	</footer>
+
+	<!-- Bootstrap JS and dependencies -->
+	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
