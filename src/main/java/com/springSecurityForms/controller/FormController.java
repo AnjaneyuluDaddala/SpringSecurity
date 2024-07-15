@@ -9,21 +9,26 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class FormController {
 	
-
-	 @GetMapping("/login")
-	    public String login(@RequestParam(value = "logout", required = false) String logout,
-	                        @RequestParam(value = "invalidSession", required = false) String invalidSession,
-	                        Model model) {
-	        if (logout != null) {
-	            model.addAttribute("logout", true);
-	        }
-	        if (invalidSession != null) {
-	            model.addAttribute("invalidSession", true);
-	        }
-	        return "login";
-	        
-	        
-	    }
+//
+//	@GetMapping("/login")
+//    public String login(@RequestParam(value = "logout", required = false) String logout,
+//                        @RequestParam(value = "invalidSession", required = false) String invalidSession,
+//                        Model model) {
+//		
+//        if (logout != null) {
+//            model.addAttribute("logout", true);
+//        } 
+//
+//        if (invalidSession != null) {
+//            model.addAttribute("invalidSession", true);
+//        } 
+//        return "login";
+//    }
+	
+	@GetMapping("/login")
+	 public String login() {
+		return "login";
+	}
 
     @GetMapping("/home")
     public String home() {
@@ -35,11 +40,8 @@ public class FormController {
 	        return "new";
 	    }
 	    
-	    @GetMapping("/logout")
-	    public String logoutPage() {
-	    	
-	    return "redirect:/login";
-	    }
+	    
+	   
 	}
 
 	   
