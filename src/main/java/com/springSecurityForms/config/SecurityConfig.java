@@ -1,9 +1,8 @@
 package com.springSecurityForms.config;
 
-import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.HttpSessionEvent;
 
-import org.apache.catalina.SessionEvent;
-import org.apache.catalina.SessionListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,11 +15,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
-import com.springSecurityForms.customSession.CustomSession;
+import com.springSecurityForms.customSession.CustomLogout;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	@Autowired
+	private CustomLogout customLogoutHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -38,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             )
             .logout(logout -> logout
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessHandler(customLogoutHandler)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .permitAll()
@@ -59,14 +61,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
     @Bean
     public HttpSessionEventPublisher httpSessionEventPublisher() {
-    	return new HttpSessionEventPublisher();
+        return new HttpSessionEventPublisher() {
+            @Override
+            public void sessionCreated(HttpSessionEvent event) {
+                super.sessionCreated(event);
+                System.out.println("Session created: " + event.getSession().getId());
+            }
+
+            @Override
+            public void sessionDestroyed(HttpSessionEvent event) {
+                super.sessionDestroyed(event);
+                System.out.println("Session destroyed: " + event.getSession().getId());
+            }
+        };
     }
     
-    @Bean
-    public HttpSessionListener sessionListener() {
-        return new CustomSession();
-
-    }
     
     
     @Bean
