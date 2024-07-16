@@ -1,5 +1,7 @@
 package com.springSecurityForms.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +32,15 @@ public class FormController {
 		return "login";
 	}
 
-    @GetMapping("/home")
-    public String home() {
+    @GetMapping("/user/home")
+    public String userHome(Model model,Principal prince) {
+    	model.addAttribute("name", prince.getName());
+        return "home";
+    }
+    
+    @GetMapping("/admin/home")
+    public String adminHome(Model model,Principal prince) {
+    	model.addAttribute("name", prince.getName());
         return "home";
     }
     
