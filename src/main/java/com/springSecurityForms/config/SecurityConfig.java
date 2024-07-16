@@ -1,5 +1,8 @@
 package com.springSecurityForms.config;
 
+import javax.servlet.http.HttpSessionEvent;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,10 +14,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
+
+import com.springSecurityForms.sessionLogout.CustomLogout;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	
+	@Autowired
+	private CustomLogout customLogoutHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -33,14 +43,35 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .logout(logout -> logout
 //                .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "POST"))
             	.logoutUrl("/logout")	
-                .logoutSuccessUrl("/login?logout")
+                .logoutSuccessHandler(customLogoutHandler)
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) //a session is created only if required
-                .invalidSessionUrl("/login?invalidSession")
-            );
+    
+            	.sessionFixation().none()	
+            		);
+    }
+    
+    
+    
+    
+    @Bean
+    public HttpSessionEventPublisher httpSessionEventPublisher() {
+        return new HttpSessionEventPublisher() {
+            @Override
+            public void sessionCreated(HttpSessionEvent event) {
+                super.sessionCreated(event);
+                System.out.println("Session created: " + event.getSession().getId());
+            }
+
+            @Override
+            public void sessionDestroyed(HttpSessionEvent event) {
+                super.sessionDestroyed(event);
+                System.out.println("Session destroyed: " + event.getSession().getId());
+            }
+        };
     }
     
     

@@ -34,9 +34,10 @@ public class FormController {
     public String home() {
         return "home";
     }
+    
 
-	    @GetMapping("/public")
-	    public String publicPage() {
+  @GetMapping("/public")
+  public String publicPage() {
 	        return "new";
 	    }
 	    

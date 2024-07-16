@@ -34,18 +34,6 @@
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
                     
-                    
-                    <div th:if="${logout}" class="alert alert-info mt-3">
-        <p>Logout successful. Please log in again.</p>
-    </div>
-
-    <div th:if="${invalidSession}"  class="alert alert-warning mt-3">
-        <p>Session expired. Please log in again.</p>
-    </div>
-
-    <div th:if="${param.error}" class="alert alert-danger mt-3">
-        <p>Invalid username or password.</p>
-    </div>
     
      </div>
             </div>
