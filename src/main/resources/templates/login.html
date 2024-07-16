@@ -33,12 +33,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
-                    <div th:if="${param.logout != null}" class="alert alert-info mt-3">
-                        <p>You have been logged out.</p>
-                    </div>
-                    <div th:if="${param.invalidSession != null}" class="alert alert-warning mt-3">
-                        <p>Session is invalid. Please login again.</p>
-                    </div>
+              
                 </div>
             </div>
         </div>
