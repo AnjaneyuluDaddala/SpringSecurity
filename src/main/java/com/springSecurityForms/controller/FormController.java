@@ -1,12 +1,15 @@
 package com.springSecurityForms.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import java.security.Principal;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class FormController {
@@ -20,10 +23,19 @@ public class FormController {
         return "login";
     }
 
-    @GetMapping("/home")
-    public String home(HttpServletRequest request) {
+    @GetMapping("/user/home")
+    public String userHome(HttpServletRequest request,Model model,Principal prince) {
         HttpSession session = request.getSession();
         logger.info("Session ID after login: " + session.getId());
+        model.addAttribute("name", prince.getName());
+        return "home";
+    }
+    
+    @GetMapping("/admin/home")
+    public String adminHome(HttpServletRequest request,Model model,Principal prince) {
+        HttpSession session = request.getSession();
+        logger.info("Session ID after login: " + session.getId());
+        model.addAttribute("name", prince.getName());
         return "home";
     }
 

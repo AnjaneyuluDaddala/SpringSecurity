@@ -1,5 +1,6 @@
 package com.springSecurityForms.config;
 
+
 import javax.servlet.http.HttpSessionEvent;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 import com.springSecurityForms.customSession.CustomLogout;
@@ -27,14 +29,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .authorizeRequests(requests -> requests
-                .anyRequest().authenticated()
+        .authorizeRequests(requests -> requests
+            	.antMatchers("/user/**").hasRole("USER")
+            	.antMatchers("/admin/*").hasRole("ADMIN")
+                .anyRequest().permitAll()
             )
             .csrf(csrf->csrf.disable())
             
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/home",true)
+//                .defaultSuccessUrl("/home",true)
+                
+                .successHandler(customAuthenticationSuccessHandler())
                 .failureUrl("/login?error=true")
                 .permitAll()               
             )
@@ -50,6 +56,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                      
             );
         
+    }
+    
+    
+    
+    @Bean
+    public AuthenticationSuccessHandler customAuthenticationSuccessHandler() {
+        return (request, response, authentication) -> {
+            String redirectUrl = request.getContextPath();
+
+            if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"))) {
+                redirectUrl = "/admin/home";
+            } else if (authentication.getAuthorities().stream().anyMatch(auth -> auth.getAuthority().equals("ROLE_USER"))) {
+                redirectUrl = "/user/home";
+            }
+
+            response.sendRedirect(redirectUrl);
+        };
     }
     
     
