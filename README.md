@@ -15,25 +15,13 @@ Before you begin, ensure you have the following installed:
 
 ## Setup Instructions
 
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/ngeducation6/samplesbapp.git
-   cd samplesbapp
-   ```
-
-2. **Checkout the Branch**
-   ```bash
-   git checkout EMS_kiran
-   ```
-   This branch contains the latest updates for the application.
-
-3. **Set MySQL database**
+1. **Set MySQL database**
    ```properties
    spring.datasource.url=jdbc:mysql://localhost:3306/ems_liquibase
    ```
    - Create a MySQL database named **ems_liquibase**.
      
-4. **Set MySQL Environment Variables**
+2. **Set MySQL Environment Variables**
    - Open Command Prompt
    - Navigate to Your Project Directory
       ```cmd
@@ -52,14 +40,14 @@ Before you begin, ensure you have the following installed:
      export MYSQL_PWD=your_mysql_password
      ```
 
-6. **Build and Run the Application**
+3. **Build and Run the Application**
       - Open Command Prompt navigate to your project and run the following commands:
    ```bash
-   mvn clean install
+   mvn clean package
    mvn spring-boot:run
    ```
 
-8. **Access the Application**
+4. **Access the Application**
    - Once the application is running, you can access it at `http://localhost:3002/hello`.
-   - this is public api to check whether the project is running 
+   - this is public api to check whether the project is running you can see message "hi this is ems application"
 
