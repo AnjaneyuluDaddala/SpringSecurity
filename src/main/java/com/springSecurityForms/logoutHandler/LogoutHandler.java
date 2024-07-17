@@ -27,11 +27,12 @@ public class LogoutHandler implements LogoutSuccessHandler{
         if (request.getSession(false) != null) {
             request.getSession(false).invalidate();
             System.out.println("Session invalidated: " + request.getSession(false).getId());
-            sessionRegister.removeSessionInformation(request.getSession().getId());
+            
         } 
         // Set the response to indicate successful logout without creating a new session
         response.setStatus(HttpServletResponse.SC_OK);
         response.getWriter().write("Logout successful");
+        sessionRegister.removeSessionInformation(request.getSession().getId());
         response.getWriter().flush();
         response.getWriter().close();
     }
