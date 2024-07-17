@@ -11,26 +11,27 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class FormController {
 	
-//
-//	@GetMapping("/login")
-//    public String login(@RequestParam(value = "logout", required = false) String logout,
-//                        @RequestParam(value = "invalidSession", required = false) String invalidSession,
-//                        Model model) {
-//		
-//        if (logout != null) {
-//            model.addAttribute("logout", true);
-//        } 
-//
-//        if (invalidSession != null) {
-//            model.addAttribute("invalidSession", true);
-//        } 
-//        return "login";
-//    }
-	
+
 	@GetMapping("/login")
-	 public String login() {
+	public String login(@RequestParam(value = "error", required = false) String error,
+						@RequestParam(value = "expired", required = false) String expired,
+						Model model) {
+		if (error != null) {
+			model.addAttribute("errorMsg", "Max sessions reached. Please log out from another session.");
+			
+		} 
+		
 		return "login";
 	}
+	
+
+    
+
+//	
+//	@GetMapping("/login")
+//	 public String login() {
+//		return "login";
+//	}
 
     @GetMapping("/user/home")
     public String userHome(Model model,Principal prince) {
@@ -60,6 +61,27 @@ public class FormController {
 	}
 
 	   
+
+/*
+ * 
+ * 
+  @GetMapping("/login")
+public String login(Model model, HttpServletRequest request) {
+    // Example condition for maximum sessions reached
+    if (isMaxSessionsReached(request)) {
+        model.addAttribute("errorMsg", "Max sessions reached. Please log out from another session.");
+    }
+    return "login";
+}
+
+private boolean isMaxSessionsReached(HttpServletRequest request) {
+    // Your logic to check if maximum sessions are reached
+    return false;
+}
+
+*/
+
+
 
 
 

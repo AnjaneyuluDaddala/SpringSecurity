@@ -53,7 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) //a session is created only if required
                 .maximumSessions(1) // Only one session per user
-                .maxSessionsPreventsLogin(false)
+                .maxSessionsPreventsLogin(true)
                 .expiredUrl("/session-expired") // Redirect to this URL if session expires
 //                .invalidSessionUrl("/session-expired")
             		);

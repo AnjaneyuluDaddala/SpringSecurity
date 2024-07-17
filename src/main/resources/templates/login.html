@@ -33,7 +33,10 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">Login</button>
                     </form>
-                    
+                               <!-- Error message section -->
+            <div th:if="${errorMsg}" class="alert alert-danger mt-3" role="alert">
+                <span th:text="${errorMsg}"></span>
+            </div> 
     
      </div>
             </div>
