@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -78,7 +79,7 @@ public class BookServiceImpl implements BookServiceInter {
                         userDetails.getAuthorities())
         );
 
-        BookUser bookUser = bookRepo.findByEmail(book.getEmail()).orElseThrow();
+        BookUser bookUser = bookRepo.findByEmail(book.getEmail()).orElseThrow(()->new UsernameNotFoundException("user not found!"));
         String generateToken = jwtServ.generateToken(bookUser);
         return new AuthenticationResponse(generateToken);
     }

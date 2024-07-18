@@ -26,6 +26,13 @@ public class JwtuserDetailsService {
 	public String extractUsername(String token) {
 		return extractClaim(token, Claims::getSubject);
 	}
+	
+	// Method to extract a specific claim from the token
+	private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+		Claims claims = extractAllClaims(token);
+		return claimsResolver.apply(claims);
+	}
+	
 
 	// Method to extract all claims from the token
 	private Claims extractAllClaims(String token) {
@@ -43,11 +50,7 @@ public class JwtuserDetailsService {
 		return Keys.hmacShaKeyFor(keyBytes);
 	}
 
-	// Method to extract a specific claim from the token
-	private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-		Claims claims = extractAllClaims(token);
-		return claimsResolver.apply(claims);
-	}
+
 
 	// Generate a token with extra claims
 	public String generateToken(Map<String, Object> extractClaims, BookUser book) {
