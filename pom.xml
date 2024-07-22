@@ -9,7 +9,7 @@
 		<version>3.3.1</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
+	<groupId>com.devdolphins</groupId>
 	<artifactId>EMS_MAIN</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>EMS_MAIN</name>
