@@ -3,12 +3,12 @@
 <head th:fragment="navbar">
     <title>Navbar</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
-    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+
 </head>
 <body>
     <div th:fragment="navbar">
@@ -20,9 +20,13 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="/welcome">
+<!--                    <a class="navbar-brand" href="/welcome">-->
+<!--                        <img th:src="@{/images/DevDolphins.jpg}" alt="Dev Dolphins" style="display: inline-block; height: 30px; margin-right: 10px;">-->
+<!--                        Dev Dolphins-->
+<!--                    </a>-->
+                    <a th:fragment="company" class="navbar-brand" href="/welcome">
                         <img th:src="@{/images/DevDolphins.jpg}" alt="Dev Dolphins" style="display: inline-block; height: 30px; margin-right: 10px;">
-                        Dev Dolphins
+                        DevDolphins
                     </a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
@@ -42,5 +46,9 @@
             </div>
         </nav>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
+
+
 </html>

@@ -89,11 +89,8 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/welcome">
-                    <img th:src="@{/images/DevDolphins.jpg}" alt="Dev Dolphins"
-                        style="display: inline-block; height: 30px; margin-right: 10px;">
-                    Dev Dolphins
-                </a>
+                <div th:replace="~{views/fragments/navbar :: company}"></div>
+
             </div>
             <div class="collapse navbar-collapse" id="myNavbar">
                 <ul class="nav navbar-nav navbar-right">
