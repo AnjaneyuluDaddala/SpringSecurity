@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private String generateNextEmployeeId() {
         Long count = employeeRepo.count() + 1;
-        return "DVDL-" + String.format("%04d", count);
+        return "DEDOL-" + String.format("%04d", count);
     }
 
     @Override
