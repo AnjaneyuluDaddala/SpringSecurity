@@ -37,7 +37,7 @@ class EmployeeServiceImplTest {
 	@BeforeEach
 	void setUp() {
 		employee1 = new Employees();
-		employee1.setEmployeeId("DVDL-0001");
+		employee1.setEmployeeId("DEDOL-0001");
 		employee1.setAdhaar(123456789012L);
 		employee1.setPan("ABCDE1234F");
 		employee1.setMobile(9876543210L);
@@ -45,7 +45,7 @@ class EmployeeServiceImplTest {
 		employee1.setStatus(true);
 
 		employee2 = new Employees();
-		employee2.setEmployeeId("DVDL-0002");
+		employee2.setEmployeeId("DEDOL-0002");
 		employee2.setAdhaar(123456789013L);
 		employee2.setPan("ABCDE1234G");
 		employee2.setMobile(9876543211L);
@@ -71,20 +71,20 @@ class EmployeeServiceImplTest {
 
 	@Test
 	void testGetEmployeeByEmployeeId() {
-		when(employeeRepo.findByEmployeeId("DVDL-0001")).thenReturn(employee1);
-		Optional<Employees> employee = employeeService.getEmployeeByEmployeeId("DVDL-0001");
+		when(employeeRepo.findByEmployeeId("DEDOL-0001")).thenReturn(employee1);
+		Optional<Employees> employee = employeeService.getEmployeeByEmployeeId("DEDOL-0001");
 		assertTrue(employee.isPresent());
-		assertEquals("DVDL-0001", employee.get().getEmployeeId());
-		verify(employeeRepo, times(1)).findByEmployeeId("DVDL-0001");
+		assertEquals("DEDOL-0001", employee.get().getEmployeeId());
+		verify(employeeRepo, times(1)).findByEmployeeId("DEDOL-0001");
 	}
 
 	@Test
 	void testUpdatePassword() {
-		when(employeeRepo.findByEmployeeId("DVDL-0001")).thenReturn(employee1);
+		when(employeeRepo.findByEmployeeId("DEDOL-0001")).thenReturn(employee1);
 		when(passwordEncoder.encode("newPassword")).thenReturn("encodedPassword");
 		when(employeeRepo.save(any(Employees.class))).thenReturn(employee1);
 
-		employeeService.updatePassword("DVDL-0001", "newPassword");
+		employeeService.updatePassword("DEDOL-0001", "newPassword");
 		assertEquals("encodedPassword", employee1.getPassword());
 		verify(employeeRepo, times(1)).save(any(Employees.class));
 	}
@@ -93,10 +93,10 @@ class EmployeeServiceImplTest {
 	void testUpdateEmployeeRole() {
 		employee1.setRole("HR");
 
-		when(employeeRepo.findByEmployeeId("DVDL-0001")).thenReturn(employee1);
+		when(employeeRepo.findByEmployeeId("DEDOL-0001")).thenReturn(employee1);
 		when(employeeRepo.save(any(Employees.class))).thenReturn(employee1);
 		assertEquals("HR", employee1.getRole());
-		employeeService.updateEmployeeRole("DVDL-0001", "ADMIN");
+		employeeService.updateEmployeeRole("DEDOL-0001", "ADMIN");
 		assertEquals("ADMIN", employee1.getRole());
 		verify(employeeRepo, times(1)).save(any(Employees.class));
 	}
@@ -106,7 +106,7 @@ class EmployeeServiceImplTest {
 
 		when(employeeRepo.save(any(Employees.class))).thenAnswer(invocation -> {
 			Employees savedEmployee = invocation.getArgument(0);
-			savedEmployee.setEmployeeId("DVDL-0003"); // Mock new ID assignment
+			savedEmployee.setEmployeeId("DEDOL-0003"); // Mock new ID assignment
 			return savedEmployee;
 		});
 		when(passwordEncoder.encode(any(CharSequence.class))).thenReturn("encodedPassword");
@@ -121,7 +121,7 @@ class EmployeeServiceImplTest {
 
 		// Verify the returned employee details
 		assertNotNull(addedEmployee);
-		assertEquals("DVDL-0003", addedEmployee.getEmployeeId()); // Ensure the new ID is set correctly
+		assertEquals("DEDOL-0003", addedEmployee.getEmployeeId()); // Ensure the new ID is set correctly
 		assertEquals("USER", addedEmployee.getRole());
 		assertEquals(12, addedEmployee.getTotalLeaves());
 
@@ -133,7 +133,7 @@ class EmployeeServiceImplTest {
 		when(employeeRepo.existsByEmail("employee1@example.com")).thenReturn(false);
 
 		Employees existingEmployee = new Employees();
-		existingEmployee.setEmployeeId("DVDL-0001");
+		existingEmployee.setEmployeeId("DEDOL-0001");
 		existingEmployee.setEmail("employee1@example.com");
 
 		boolean unique = employeeService.isUnique(existingEmployee);
