@@ -75,6 +75,8 @@ public class OperationsControllers {
 				return "redirect:/hr/home";
 			} else if (role.contains("ROLE_USER")) {
 				return "redirect:/user/home";
+			}else if(role.contains("ROLE_SUPER_ADMIN")){
+				return "redirect:/admin/home";
 			}
 		}
 		return "views/pages/welcome";

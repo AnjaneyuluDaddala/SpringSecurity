@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 import com.devdolphins.models.Employees;
 
+import feign.Param;
+
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employees, String> {
 
@@ -35,6 +37,9 @@ public interface EmployeeRepo extends JpaRepository<Employees, String> {
     boolean existsByMobile(Long mobile);
     boolean existsByEmail(String email);
     
+
+	@Query("SELECT CASE WHEN COUNT(e) > 0 THEN true ELSE false END FROM Employees e WHERE e.role = :role")
+    boolean existsByRole(@Param("role") String role);
     
 
 }

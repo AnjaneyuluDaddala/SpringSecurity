@@ -48,7 +48,7 @@ public interface EmployeeService {
     
 	void updateEmployeeStatus(String employeeid, Boolean status);	
 
-	
+	boolean superAdminExists();
 
 
 }

@@ -76,4 +76,15 @@
         </update>
     </changeSet>
 
+
+    <changeSet author="anjaneyulu" id="5">
+       <update tableName="employees">
+         <column name="employee_id" value="superAdmin" />
+         <column name="firstname" value="SuperAdmin"/>
+         <column name="role" value="SUPER_ADMIN"/>
+         <column name="password" value="$2a$12$Pq10cEajG37Q9h44OgWyweHuE3HtfNOYk9IaHrvPdHifBBPJGIKXm"/>
+         <where>employee_id = "DEDOL-0001"</where>
+        </update>    
+   </changeSet>
+
 </databaseChangeLog>

@@ -34,10 +34,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Optional<Employees> getEmployeeByEmployeeId(String employeeid) {
         return Optional.ofNullable(employeeRepo.findByEmployeeId(employeeid));
     }
+    
+    @Override
+    public boolean superAdminExists() {
+        return employeeRepo.existsByRole("SUPER_ADMIN");
+    }
 
     private String generateNextEmployeeId() {
-        Long count = employeeRepo.count() + 1;
-        return "DEDOL-" + String.format("%04d", count);
+        Long count = employeeRepo.count() - (superAdminExists() ? 1 : 0);
+        return "DEDOL-" + String.format("%04d", count + 1);
     }
 
     @Override
