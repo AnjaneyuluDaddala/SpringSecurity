@@ -3,6 +3,7 @@ package com.devdolphins.controllers;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.boot.actuate.web.exchanges.HttpExchange.Principal;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.devdolphins.customAnnotation.CustomAnnotation;
 import com.devdolphins.jwt.JwtUtil;
 import com.devdolphins.models.Employees;
 import com.devdolphins.service.EmployeeServiceImpl;
@@ -68,7 +70,7 @@ public class OperationsControllers {
 		if (authentication != null && authentication.isAuthenticated()
 				&& !(authentication instanceof AnonymousAuthenticationToken)) {
 			String role = authentication.getAuthorities().iterator().next().getAuthority();
-
+			logger.info("User role: " + role); // Log the role
 			if (role.contains("ROLE_ADMIN")) {
 				return "redirect:/admin/home";
 			} else if (role.contains("ROLE_HR")) {
@@ -176,6 +178,7 @@ public class OperationsControllers {
 
 	@Operation(summary = "Edit an existing employee", description = "Processes the form submission to edit an existing employee")
 	@PostMapping("/edit/{employeeid}")
+	@CustomAnnotation
 	public String editEmployees(@PathVariable String employeeid, @ModelAttribute(EMPLOYEE) Employees updatedEmployee,
 			RedirectAttributes attributes) {
 		Optional<Employees> optionalEmp = employeeService.getEmployeeByEmployeeId(employeeid);

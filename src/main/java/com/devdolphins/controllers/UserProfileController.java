@@ -37,14 +37,18 @@ public class UserProfileController {
 			return "error";
 		}
 		model.addAttribute("Profile", user);
+		String role = authentication.getAuthorities().iterator().next().getAuthority();
+		model.addAttribute("role", role);
 
 		return "views/pages/profile";
 	}
 
 	@Operation(summary = "Employee dashboard", description = "Displays the user dashboard")
 	@GetMapping("/user/home")
-	public String userDashboard() {
-		return "views/pages/userhome";
+	public String userDashboard(Model model,Authentication auth) {
+		String role = auth.getAuthorities().iterator().next().getAuthority();
+		model.addAttribute("role", role);
+        return "views/pages/userhome";
 	}
 
 	@GetMapping("/updateMyPassword")
@@ -55,11 +59,10 @@ public class UserProfileController {
 		Employees employee = employeeServiceImpl.findByEmployeeId(employeeid);
 
 		if (employee == null) {
-			throw new RuntimeException("Employee not found");
+			throw new RuntimeException("Employee not found");	
 		}
 
 		model.addAttribute(EMPLOYEE, employee); // Pass the found employee
-
 		return "views/fragments/updateMyPassword";
 	}
 

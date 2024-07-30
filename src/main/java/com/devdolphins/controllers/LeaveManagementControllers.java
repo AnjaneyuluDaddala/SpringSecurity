@@ -34,7 +34,9 @@ public class LeaveManagementControllers {
     // Assuming you have a service layer
 
     @GetMapping("/leaveRequest")
-    public String showLeaveRequestForm(Model model) {
+    public String showLeaveRequestForm(Model model,Authentication auth) {
+       String role= auth.getAuthorities().iterator().next().getAuthority();
+        model.addAttribute("role", role);
         model.addAttribute("leave", new LeaveDTO()); // Prepare a new LeaveDTO object for the form
         return "views/leavemanagement/LeaveRequestForm"; // Assuming a view named leaveRequestForm exists
     }

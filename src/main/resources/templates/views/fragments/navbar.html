@@ -25,7 +25,7 @@
 <!--                        Dev Dolphins-->
 <!--                    </a>-->
                     <a th:fragment="company" class="navbar-brand" href="/welcome">
-                        <img th:src="@{/images/DevDolphins.jpg}" alt="Dev Dolphins" style="display: inline-block; height: 30px; margin-right: 10px;">
+                        <img th:src="@{/images/DevDolphins.jpg}" alt="DevDolphins" style="display: inline-block; height: 30px; margin-right: 10px;">
                         DevDolphins
                     </a>
                 </div>
@@ -36,7 +36,8 @@
                                 <span class="user-icon fa fa-user"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="/mycorner">My Corner</a></li>
+                                <!-- <li><a href="/mycorner">My Corner</a></li> -->
+                                <li th:if="${role != 'ROLE_USER'}"><a href="/mycorner">My Corner</a></li>
                                 <li><a th:href="@{/updateMyPassword}">Reset Password</a></li>
                                 <li><a th:href="@{/logout}">Logout</a></li>
                             </ul>

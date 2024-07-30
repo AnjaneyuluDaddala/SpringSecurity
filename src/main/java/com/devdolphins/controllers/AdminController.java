@@ -40,7 +40,9 @@ public class AdminController {
     public String myview(Model model) {     
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		Employees user = employeeServiceImpl.findByEmployeeId(authentication.getName());
+		String role = authentication.getAuthorities().iterator().next().getAuthority();
 		model.addAttribute("user",user);
+		model.addAttribute("role", role);
         return "views/pages/mycorner";
     }
     
